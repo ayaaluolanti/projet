@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme d'Examen</title>
+    <link rel="stylesheet" href="k.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Écran d'accueil -->
+        <div id="home" class="screen">
+            <h1>Plateforme d'Examen</h1>
+            <div class="auth-forms">
+                <div id="login-form">
+                    <h2>Connexion</h2>
+                    <select id="login-role">
+                        <option value="teacher">Enseignant</option>
+                        <option value="student">Étudiant</option>
+                    </select>
+                    <input type="email" id="login-email" placeholder="Email">
+                    <input type="password" id="login-password" placeholder="Mot de passe">
+                    <button id="login-btn">Se connecter</button>
+                    <p id="toggle-register">Pas de compte? S'inscrire</p>
+                </div>
+
+                <div id="register-form" style="display:none">
+                    <h2>Inscription</h2>
+                    <select id="register-role">
+                        <option value="teacher">Enseignant</option>
+                        <option value="student">Étudiant</option>
+                    </select>
+                    <input type="text" id="register-name" placeholder="Nom complet">
+                    <input type="email" id="register-email" placeholder="Email">
+                    <input type="password" id="register-password" placeholder="Mot de passe">
+                    <button id="register-btn">S'inscrire</button>
+                    <p id="toggle-login">Déjà un compte? Se connecter</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Espace Enseignant -->
+        <div id="teacher" class="screen" style="display:none">
+            <header>
+                <h2>Espace Enseignant</h2>
+                <button id="logout-btn">Déconnexion</button>
+            </header>
+            
+            <div id="teacher-dashboard">
+                <button id="create-exam-btn">Créer un examen</button>
+                <button id="view-exams-btn">Mes examens</button>
+            </div>
+
+            <!-- Création d'examen -->
+            <div id="exam-creation" style="display:none">
+                <h3>Nouvel Examen</h3>
+                <div class="form-group">
+                    <label>Titre:</label>
+                    <input type="text" id="exam-title">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea id="exam-description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Public ciblé:</label>
+                    <input type="text" id="exam-audience" placeholder="2e année MIP, Groupe A">
+                </div>
+                <button id="save-exam-btn">Enregistrer l'examen</button>
+            </div>
+
+            <!-- Ajout de questions -->
+            <div id="question-management" style="display:none">
+                <h3 id="current-exam-name"></h3>
+                <div class="question-types">
+                    <button id="add-direct-btn">+ Question Directe</button>
+                    <button id="add-qcm-btn">+ QCM</button>
+                </div>
+
+                <!-- Formulaire Question Directe -->
+                <div id="direct-form" class="question-form" style="display:none">
+                    <h4>Nouvelle Question Directe</h4>
+                    <textarea id="direct-text" placeholder="Énoncé de la question"></textarea>
+                    <input type="text" id="direct-answer" placeholder="Réponse correcte">
+                    <div class="form-group">
+                        <label>Tolérance (%):</label>
+                        <input type="number" id="direct-tolerance" min="0" max="100" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Points:</label>
+                        <input type="number" id="direct-points" min="1" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label>Durée (sec):</label>
+                        <input type="number" id="direct-duration" min="10" value="60">
+                    </div>
+                    <button id="save-direct-btn">Enregistrer</button>
+                </div>
+
+                <!-- Formulaire QCM -->
+                <div id="qcm-form" class="question-form" style="display:none">
+                    <h4>Nouvelle Question QCM</h4>
+                    <textarea id="qcm-text" placeholder="Énoncé de la question"></textarea>
+                    <div id="qcm-options">
+                        <div class="qcm-option">
+                            <input type="text" class="option-text" placeholder="Option 1">
+                            <input type="checkbox" class="option-correct">
+                            <label>Correcte</label>
+                        </div>
+                    </div>
+                    <button id="add-option-btn">+ Ajouter Option</button>
+                    <div class="form-group">
+                        <label>Points:</label>
+                        <input type="number" id="qcm-points" min="1" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label>Durée (sec):</label>
+                        <input type="number" id="qcm-duration" min="10" value="60">
+                    </div>
+                    <button id="save-qcm-btn">Enregistrer</button>
+                </div>
+
+                <!-- Liste des questions -->
+                <div id="questions-list">
+                    <h4>Questions ajoutées</h4>
+                    <div id="questions-container"></div>
+                </div>
+
+                <!-- Lien d'examen -->
+                <div id="exam-link-container" style="display:none">
+                    <h4>Lien de l'examen</h4>
+                    <input type="text" id="exam-link" readonly>
+                    <button id="copy-link-btn">Copier</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Espace Étudiant -->
+        <div id="student" class="screen" style="display:none">
+            <header>
+                <h2>Espace Étudiant</h2>
+                <button id="student-logout-btn">Déconnexion</button>
+            </header>
+
+            <div id="student-exam-container">
+                <!-- Contenu dynamique -->
+            </div>
+        </div>
+    </div>
+    <!-- Dans direct-form et qcm-form -->
+<div class="form-group">
+    <label>Image (optionnelle):</label>
+    <input type="file" id="question-image" accept="image/*">
+</div>
+
+    <script src="k.js"></script>
+
+
+</body>
+</html>
